@@ -4,9 +4,6 @@ import logging
 from dotenv import load_dotenv
 import os
 
-# Настройка логирования
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
 # Загрузка переменных окружения из .env файла
 load_dotenv()
 # Интервал проверки в секундах
@@ -29,7 +26,7 @@ def run_script(script_path):
     subprocess.run(["./venv/Scripts/python", script_path], check=True)
 
 
-if __name__ == '__main__':
+def run_scripts_in_infinite_loop():
     iteration = 0
     while True:
         iteration += 1
