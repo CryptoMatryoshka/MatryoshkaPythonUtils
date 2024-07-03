@@ -1,6 +1,7 @@
 import logging
 from telegram import Bot
 from telegram.error import TelegramError
+from telegram.constants import ParseMode
 from dotenv import load_dotenv
 import os
 import asyncio
@@ -36,7 +37,7 @@ async def _send_message(text):
     """
     for attempt in range(ERROR_MESSAGE_RETRY_COUNT):
         try:
-            await bot.send_message(chat_id=TELEGRAM_CHANNEL, text=text)
+            await bot.send_message(chat_id=TELEGRAM_CHANNEL, text=text, parse_mode=ParseMode.HTML)
             logging.info(f"Сообщение отправлено в чат {TELEGRAM_CHANNEL}")
             break
         except TelegramError as e:
@@ -70,7 +71,7 @@ async def _send_photo(photo_path, caption=None):
 
         try:
             with open(photo_path, 'rb') as photo:
-                await bot.send_photo(chat_id=TELEGRAM_CHANNEL, photo=photo, caption=caption)
+                await bot.send_photo(chat_id=TELEGRAM_CHANNEL, photo=photo, caption=caption, parse_mode=ParseMode.HTML)
             logging.info(f"Картинка отправлена в чат {TELEGRAM_CHANNEL}")
             break
         except TelegramError as e:
