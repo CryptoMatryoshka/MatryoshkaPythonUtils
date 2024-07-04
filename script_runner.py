@@ -21,9 +21,15 @@ if not SCRIPTS_ENV:
 # Преобразование строки скриптов в список
 scripts = SCRIPTS_ENV.split(',')
 
+# Проверяем лежит ли python в .venv
+python_exec_file = "./venv/Scripts/python"
+if not os.path.isfile(python_exec_file):
+    python_exec_file = "python"
+
+
 def run_script(script_path):
     logging.info(f"Стартуем скрипт: {script_path}...")
-    subprocess.run(["./venv/Scripts/python", script_path], check=True)
+    subprocess.run([python_exec_file, script_path], check=True)
 
 
 def run_scripts_in_infinite_loop():
