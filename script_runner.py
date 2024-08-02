@@ -17,8 +17,13 @@ if not SCRIPTS_ENV:
 scripts = SCRIPTS_ENV.split(',')
 
 # Проверяем лежит ли python в .venv
-python_exec_file = "./venv/Scripts/python"
-if not os.path.isfile(python_exec_file):
+python_exec_file_1 = "./venv/Scripts/python"
+python_exec_file_2 = "../venv/Scripts/python"
+if os.path.isfile(python_exec_file_1):
+    python_exec_file = python_exec_file_1
+elif os.path.isfile(python_exec_file_2):
+    python_exec_file = python_exec_file_2
+else:
     python_exec_file = "python"
 
 
