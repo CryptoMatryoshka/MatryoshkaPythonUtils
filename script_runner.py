@@ -65,7 +65,7 @@ def run_scripts_in_infinite_loop():
 
             # Таймаут перед следующим запуском
             time.sleep(1)
-        except subprocess.CalledProcessError:
-            logging.error(f"Скрипт {script_path} упал. Перезапускаем...")
+        except subprocess.CalledProcessError as e:
+            logging.error(f"Скрипт {script_path} упал. Перезапускаем... {e}")
             # Задержка перед перезапуском
             time.sleep(5)
