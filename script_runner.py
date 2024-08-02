@@ -40,7 +40,7 @@ def run_scripts_in_infinite_loop():
     # ditc для хранения времени последнего запуска script_conf:datatime
     script_execution_dict = {}
     for script_conf in scripts:
-        script_execution_dict[script_conf] = 0
+        script_execution_dict[script_conf] = datetime.min
 
     logging.info(f"Начинаем пускать скрипты!")
     while True:
