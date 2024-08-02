@@ -17,8 +17,8 @@ if not SCRIPTS_ENV:
 scripts = SCRIPTS_ENV.split(',')
 
 # Проверяем лежит ли python в .venv
-python_exec_file_1 = "./venv/Scripts/python"
-python_exec_file_2 = "../venv/Scripts/python"
+python_exec_file_1 = "./venv/Scripts/python.exe"
+python_exec_file_2 = "../venv/Scripts/python.exe"
 if os.path.isfile(python_exec_file_1):
     python_exec_file = python_exec_file_1
 elif os.path.isfile(python_exec_file_2):
@@ -26,10 +26,9 @@ elif os.path.isfile(python_exec_file_2):
 else:
     python_exec_file = "python"
 
-logging.info(f"Используем python скрипт {python_exec_file}")
-
-
 def run_script(script_path):
+    logging.info(f"Используем python скрипт {python_exec_file}")
+
     logging.info(f"Стартуем скрипт: {script_path}...")
     subprocess.run([python_exec_file, script_path], check=True)
 
