@@ -40,7 +40,7 @@ def run_scripts_in_infinite_loop():
     # ditc для хранения времени последнего запуска script_conf:datatime
     script_execution_dict = {}
     for script_conf in scripts:
-        script_execution_dict[script_conf] = datetime.max
+        script_execution_dict[script_conf] = datetime.min
 
     logging.info(f"Ждем 10 сек, и начинаем пускать скрипты!")
     time.sleep(10)
@@ -55,6 +55,7 @@ def run_scripts_in_infinite_loop():
 
                 # Считаем сколько времени прошло
                 past_seconds = (datetime.now() - script_execution_dict[script_conf]).total_seconds()
+                logging.info(f"past_seconds: {past_seconds} check_interval_seconds {check_interval_seconds}")
                 # Добавляем rand чтобы, не палиться как робот
                 if past_seconds > check_interval_seconds + randint(1, 30):
                     # Сохраняем время запуска
