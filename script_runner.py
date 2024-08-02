@@ -6,11 +6,6 @@ import os
 
 # Загрузка переменных окружения из .env файла
 load_dotenv()
-# Интервал проверки в секундах
-CHECK_INTERVAL_SECONDS = os.getenv('CHECK_INTERVAL_SECONDS')
-if not CHECK_INTERVAL_SECONDS:
-    raise ValueError("Интервал проверки не найден в переменных окружения. "
-                     "Проверьте наличие CHECK_INTERVAL_SECONDS переменной в .env файле.")
 
 # Получение списка скриптов из переменной окружения
 SCRIPTS_ENV = os.getenv('SCRIPTS')
@@ -38,13 +33,16 @@ def run_scripts_in_infinite_loop():
         iteration += 1
         logging.info(f"Начинаем пускать скрипты, итерация: {iteration}...")
         try:
-            for script_path in scripts:
-
+            for script_conf in scripts:
+                # Путь до скрипта
+                script_path = script_conf.split(':')[0]
+                # Интервал проверки в секундах
+                check_interval_seconds = script_conf.split(':')[1]
                 run_script(script_path)
                 time.sleep(5)
             # Таймаут перед следующим запуском
-            logging.info(f"*** Закончили проверку, ожидаем {CHECK_INTERVAL_SECONDS} секунд...")
-            time.sleep(int(CHECK_INTERVAL_SECONDS))
+            logging.info(f"*** Закончили проверку, ожидаем {check_interval_seconds} секунд...")
+            time.sleep(int(check_interval_seconds))
         except subprocess.CalledProcessError:
             logging.error(f"Скрипт {script_path} упал. Перезапускаем...")
             # Задержка перед перезапуском
