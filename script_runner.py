@@ -54,9 +54,9 @@ def run_scripts_in_infinite_loop():
                 check_interval_seconds = int(script_conf.split(':')[1])
 
                 # Считаем сколько времени прошло
-                past_seconds = int((script_execution_dict[script_conf] - datetime.now()).total_seconds())
+                past_seconds = (datetime.now() - script_execution_dict[script_conf]).total_seconds()
                 # Добавляем rand чтобы, не палиться как робот
-                if past_seconds < check_interval_seconds + randint(1, 30):
+                if past_seconds > check_interval_seconds + randint(1, 30):
                     # Сохраняем время запуска
                     script_execution_dict[script_conf] = datetime.now()
 
