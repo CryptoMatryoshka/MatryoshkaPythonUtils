@@ -32,7 +32,8 @@ def run_script(script_path):
     logging.info(f"Используем python скрипт {python_exec_file}")
     logging.info(f"Стартуем скрипт: {script_path}...")
     try:
-        subprocess.run([python_exec_file, script_path], check=True)
+        process = subprocess.run([python_exec_file, script_path], check=True)
+        process.wait()
         logging.info(f"Скрипт отработал успешно: {script_path}")
     except subprocess.CalledProcessError as e:
         logging.error(f"Ошибка при выполнении скрипта {script_path}: {e}")
