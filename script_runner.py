@@ -26,6 +26,8 @@ elif os.path.isfile(python_exec_file_2):
 else:
     python_exec_file = "python"
 
+logging.info(f"Используем python скрипт {python_exec_file}")
+
 
 def run_script(script_path):
     logging.info(f"Стартуем скрипт: {script_path}...")
