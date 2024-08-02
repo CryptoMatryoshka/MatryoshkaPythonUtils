@@ -30,7 +30,7 @@ def click_on_image(image_path, confidence=0.9, max_processing_sec=3):
     return False
 
 
-def is_image_existed_on_screen(image_path, confidence=0.9, max_processing_sec=10):
+def is_image_existed_on_screen(image_path, confidence=0.9, max_processing_sec=3):
     """
     Проверяет наличие заданной картинки на экране.
 
