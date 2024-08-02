@@ -47,4 +47,3 @@ def run_scripts_in_infinite_loop():
             logging.error(f"Скрипт {script_path} упал. Перезапускаем...")
             # Задержка перед перезапуском
             time.sleep(1)
-            run_script(script_path)
