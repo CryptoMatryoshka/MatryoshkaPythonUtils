@@ -30,38 +30,40 @@ else:
 
 def run_script(script_path):
     logging.info(f"Используем python скрипт {python_exec_file}")
-
     logging.info(f"Стартуем скрипт: {script_path}...")
-    subprocess.run([python_exec_file, script_path], check=True)
-
+    try:
+        subprocess.run([python_exec_file, script_path], check=True)
+        logging.info(f"Скрипт отработал успешно: {script_path}")
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Ошибка при выполнении скрипта {script_path}: {e}")
+        raise
 
 def run_scripts_in_infinite_loop():
     iteration = 0
-    # ditc для хранения времени последнего запуска script_conf:datatime
-    script_execution_dict = {}
-    for script_conf in scripts:
-        script_execution_dict[script_conf] = datetime.min
+    # Словарь для хранения времени последнего запуска script_conf:datetime
+    script_execution_dict = {script_conf: datetime.min for script_conf in scripts}
 
-    logging.info(f"Ждем 10 сек, и начинаем пускать скрипты!")
+    logging.info(f"Ждем 10 сек, и начинаем запускать скрипты!")
     time.sleep(10)
+
     while True:
         iteration += 1
         try:
             for script_conf in scripts:
                 # Путь до скрипта
-                script_path = script_conf.split(':')[0]
-                # Интервал проверки в секундах
-                check_interval_seconds = int(script_conf.split(':')[1])
+                script_path, check_interval_seconds = script_conf.split(':')
+                check_interval_seconds = int(check_interval_seconds)
 
                 # Считаем сколько времени прошло
                 past_seconds = (datetime.now() - script_execution_dict[script_conf]).total_seconds()
-                logging.info(f"past_seconds: {past_seconds} check_interval_seconds {check_interval_seconds}")
-                # Добавляем rand чтобы, не палиться как робот
+                logging.info(f"past_seconds: {past_seconds} check_interval_seconds: {check_interval_seconds}")
+
+                # Добавляем случайное время, чтобы не палиться как робот
                 if past_seconds > check_interval_seconds + randint(1, 30):
                     # Сохраняем время запуска
                     script_execution_dict[script_conf] = datetime.now()
 
-                    logging.info(f"Пускаем скрипт: {script_path}")
+                    logging.info(f"Запускаем скрипт: {script_path}")
                     run_script(script_path)
                     logging.info(f"Скрипт отработал: {script_path}")
 
@@ -71,3 +73,9 @@ def run_scripts_in_infinite_loop():
             logging.error(f"Скрипт {script_path} упал. Перезапускаем... {e}")
             # Задержка перед перезапуском
             time.sleep(5)
+        except Exception as e:
+            logging.error(f"Неожиданная ошибка: {e}")
+            time.sleep(5)
+
+if __name__ == "__main__":
+    run_scripts_in_infinite_loop()
