@@ -42,7 +42,8 @@ def run_scripts_in_infinite_loop():
     for script_conf in scripts:
         script_execution_dict[script_conf] = datetime.min
 
-    logging.info(f"Начинаем пускать скрипты!")
+    logging.info(f"Ждем 10 сек, и начинаем пускать скрипты!")
+    time.sleep(10)
     while True:
         iteration += 1
         try:
@@ -55,7 +56,7 @@ def run_scripts_in_infinite_loop():
                 # Считаем сколько времени прошло
                 past_seconds = int((script_execution_dict[script_conf] - datetime.now()).total_seconds())
                 # Добавляем rand чтобы, не палиться как робот
-                if past_seconds > check_interval_seconds + randint(1, 30):
+                if past_seconds < check_interval_seconds + randint(1, 30):
                     # Сохраняем время запуска
                     script_execution_dict[script_conf] = datetime.now()
 
@@ -63,7 +64,7 @@ def run_scripts_in_infinite_loop():
                     run_script(script_path)
                     logging.info(f"Скрипт отработал: {script_path}")
 
-            # Таймаут перед следующим запуском
+            # Таймаут перед следующей итерацией
             time.sleep(1)
         except subprocess.CalledProcessError as e:
             logging.error(f"Скрипт {script_path} упал. Перезапускаем... {e}")
