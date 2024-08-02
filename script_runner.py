@@ -3,6 +3,8 @@ import time
 import logging
 from dotenv import load_dotenv
 import os
+from datetime import datetime
+from random import randint
 
 # Загрузка переменных окружения из .env файла
 load_dotenv()
@@ -35,21 +37,35 @@ def run_script(script_path):
 
 def run_scripts_in_infinite_loop():
     iteration = 0
+    # ditc для хранения времени последнего запуска script_conf:datatime
+    script_execution_dict = {}
+    for script_conf in scripts:
+        script_execution_dict[script_conf] = 0
+
+    logging.info(f"Начинаем пускать скрипты!")
     while True:
         iteration += 1
-        logging.info(f"Начинаем пускать скрипты, итерация: {iteration}...")
         try:
             for script_conf in scripts:
                 # Путь до скрипта
                 script_path = script_conf.split(':')[0]
                 # Интервал проверки в секундах
-                check_interval_seconds = script_conf.split(':')[1]
-                run_script(script_path)
-                time.sleep(5)
+                check_interval_seconds = int(script_conf.split(':')[1])
+
+                # Считаем сколько времени прошло
+                past_seconds = int((script_execution_dict[script_conf] - datetime.now()).total_seconds())
+                # Добавляем rand чтобы, не палиться как робот
+                if past_seconds > check_interval_seconds + randint(1, 30):
+                    # Сохраняем время запуска
+                    script_execution_dict[script_conf] = datetime.now()
+
+                    logging.info(f"Пускаем скрипт: {script_path}")
+                    run_script(script_path)
+                    logging.info(f"Скрипт отработал: {script_path}")
+
             # Таймаут перед следующим запуском
-            logging.info(f"*** Закончили проверку, ожидаем {check_interval_seconds} секунд...")
-            time.sleep(int(check_interval_seconds))
+            time.sleep(1)
         except subprocess.CalledProcessError:
             logging.error(f"Скрипт {script_path} упал. Перезапускаем...")
             # Задержка перед перезапуском
-            time.sleep(1)
+            time.sleep(5)
