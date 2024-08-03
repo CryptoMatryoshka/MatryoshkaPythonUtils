@@ -3,7 +3,7 @@ import time
 import logging
 from dotenv import load_dotenv
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from random import randint, seed
 
 # Загрузка переменных окружения из .env файла
@@ -58,11 +58,10 @@ def run_scripts_in_infinite_loop():
                 check_interval_seconds = int(check_interval_seconds)
 
                 # Считаем сколько времени прошло
-                past_seconds = (datetime.now() - script_execution_dict[script_conf]).total_seconds()
                 if datetime.now() > script_execution_dict[script_conf]:
                     # Сохраняем время запуска
                     # Добавляем случайное время, чтобы не палиться как робот
-                    script_execution_dict[script_conf] = datetime.fromtimestamp(datetime.now().total_seconds() + check_interval_seconds + randint(0, 720))
+                    script_execution_dict[script_conf] = datetime.now() + timedelta(seconds=(check_interval_seconds + randint(0, 720)))
 
                     logging.info(f"Запускаем скрипт: {script_path}")
                     run_script(script_path)
