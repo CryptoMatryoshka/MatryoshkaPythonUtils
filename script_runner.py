@@ -32,8 +32,8 @@ def run_script(script_path):
     logging.info(f"Используем python скрипт {python_exec_file}")
     logging.info(f"Стартуем скрипт: {script_path}...")
     try:
-        process = subprocess.run([python_exec_file, script_path], check=True)
-        process.wait()
+        subprocess.run([python_exec_file, script_path], check=True)
+
         logging.info(f"Скрипт отработал успешно: {script_path}")
     except subprocess.CalledProcessError as e:
         logging.error(f"Ошибка при выполнении скрипта {script_path}: {e}")
@@ -62,6 +62,8 @@ def run_scripts_in_infinite_loop():
                     # Сохраняем время запуска
                     # Добавляем случайное время, чтобы не палиться как робот
                     script_execution_dict[script_conf] = datetime.now() + timedelta(seconds=(check_interval_seconds + randint(0, 720)))
+                    logging.info(f"Скрипт: {script_path} Время запуска, {script_execution_dict[script_conf]}"
+                                 f" check_interval_seconds {check_interval_seconds}")
 
                     logging.info(f"Запускаем скрипт: {script_path}")
                     run_script(script_path)
