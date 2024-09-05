@@ -26,7 +26,7 @@ def click_on_image(image_path, confidence=0.9, max_processing_sec=3, wait_time=3
                 time.sleep(wait_time)
                 return True
         except Exception as e:
-            logging.error(f"Ошибка при поиске картинки: {e}", e)
+            logging.error(f"Ошибка при поиске картинки: {e}")
 
         time.sleep(1)
 
