@@ -3,7 +3,7 @@ import time
 import logging
 
 
-def click_on_image(image_path, confidence=0.9, max_processing_sec=3):
+def click_on_image(image_path, confidence=0.9, max_processing_sec=3, wait_time=3):
     """
     Находит заданную картинку на экране и кликает по ней.
 
@@ -22,10 +22,14 @@ def click_on_image(image_path, confidence=0.9, max_processing_sec=3):
                 # Клик по центру найденной области
                 pyautogui.click(center)
                 logging.info(f"Клик по картинке {image_path} выполнен.")
+
+                time.sleep(wait_time)
                 return True
         except Exception as e:
-            logging.debug(f"Ошибка при поиске картинки: {e}")
+            logging.error(f"Ошибка при поиске картинки: {e}", e)
+
         time.sleep(1)
+
     logging.warning(f"Картинка {image_path} не найдена в течение {max_processing_sec} секунд.")
     return False
 
