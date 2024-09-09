@@ -3,6 +3,11 @@ import time
 import logging
 
 
+def scroll(scroll_clicks, wait_time=3):
+    pyautogui.scroll(scroll_clicks)
+    time.sleep(wait_time)
+
+
 def click_on_image(image_path, confidence=0.9, max_processing_sec=3, wait_time=3):
     """
     Находит заданную картинку на экране и кликает по ней.
