@@ -54,7 +54,7 @@ def move_to_image(image_path, confidence=0.9, max_processing_sec=3, wait_time=3)
                 logging.info(f"Навели мыш на картинку {image_path}.")
 
                 time.sleep(wait_time)
-                return location
+                return center
         except Exception as e:
             logging.error(f"Ошибка при поиске картинки: {e}")
 
