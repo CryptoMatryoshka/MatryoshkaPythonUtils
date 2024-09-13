@@ -45,16 +45,22 @@ def move_to_image(image_path, confidence=0.9, max_processing_sec=3, wait_time=3)
     while time.time() - start_time < max_processing_sec:
         try:
             # Поиск картинки на экране
-            location = pyautogui.locateOnScreen(image_path, confidence=confidence)
-            if location is not None:
-                # Получение центра найденной области
-                center = pyautogui.center(location)
-                # Клик по центру найденной области
-                pyautogui.moveTo(center)
-                logging.info(f"Навели мыш на картинку {image_path}.")
+            location_matches = list(pyautogui.locateAllOnScreen(image_path, confidence=confidence))
+            if not location_matches:
+                logging.warning("Изображения не найдены.")
+                return None
 
-                time.sleep(wait_time)
-                return center
+            # Найти изображение с наибольшей координатой y (самое нижнее)
+            location = max(location_matches, key=lambda x: x.top)
+
+            # Получение центра найденной области
+            center = pyautogui.center(location)
+            # Клик по центру найденной области
+            pyautogui.moveTo(center)
+            logging.info(f"Навели мыш на картинку {image_path}.")
+
+            time.sleep(wait_time)
+            return center
         except Exception as e:
             logging.error(f"Ошибка при поиске картинки: {e}")
 
