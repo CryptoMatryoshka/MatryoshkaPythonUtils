@@ -18,7 +18,7 @@ def scroll_down_by_dragdrop(shift_px):
     screen_center_y = screen_size_y / 2
     pyautogui.moveTo(screen_center_x, screen_center_y)
     pyautogui.dragTo(screen_center_x, screen_center_y - shift_px, button='left', duration=2)
-
+    time.sleep(3)
 
 def click_on_image(image_path, confidence=0.9, max_processing_sec=3, wait_time=3):
     start_time = time.time()
