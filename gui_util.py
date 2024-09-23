@@ -4,6 +4,10 @@ import logging
 
 
 def scroll(scroll_clicks, wait_time=3):
+    screen_size_x, screen_size_y = pyautogui.size()
+    screen_center_x = screen_size_x / 2
+    screen_center_y = screen_size_y / 2
+    pyautogui.moveTo(screen_center_x, screen_center_y)
     pyautogui.scroll(scroll_clicks)
     time.sleep(wait_time)
 
