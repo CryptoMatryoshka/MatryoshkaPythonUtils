@@ -21,6 +21,19 @@ def scroll_down_by_dragdrop(shift_px):
     pyautogui.dragTo(screen_center_x, screen_center_y - shift_px, button='left', duration=2)
     time.sleep(3)
 
+
+def count_of_images_on_screen(image_path, confidence=0.9, max_processing_sec=3, wait_time=3):
+    start_time = time.time()
+    while time.time() - start_time < max_processing_sec:
+        try:
+            # Поиск всех вхождений картинки на экране
+            locations = list(pyautogui.locateAllOnScreen(image_path, confidence=confidence))
+            return len(locations)
+        except Exception as e:
+            logging.error(f"Ошибка при поиске картинки: {e}, path: {image_path}")
+        time.sleep(1)
+    return 0
+
 def click_on_image(image_path, confidence=0.9, max_processing_sec=3, wait_time=3):
     start_time = time.time()
     while time.time() - start_time < max_processing_sec:
