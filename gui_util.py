@@ -1,6 +1,7 @@
 import pyautogui
 import time
 import logging
+from random import randint
 
 
 def scroll(scroll_clicks, wait_time=3):
@@ -92,11 +93,21 @@ def click_on_image_and_hold(image_path, confidence=0.9, max_processing_sec=3, wa
             if location is not None:
                 # Получение центра найденной области
                 center = pyautogui.center(location)
+                # Смещение координат центра на рандомное значение от -15 до 15 по обеим осям
+                random_offset_x = randint(-15, 15)
+                random_offset_y = randint(-15, 15)
+
+                # Новая позиция с учетом смещения
+                new_x = center.x + random_offset_x
+                new_y = center.y + random_offset_y
+
+                new_center = (new_x, new_y)
+
                 # Клик по центру найденной области
                 logging.info(f"Зажали картинку {image_path} выполнен.")
-                pyautogui.mouseDown(center)
+                pyautogui.mouseDown(new_center)
                 time.sleep(hold_time)
-                pyautogui.mouseUp(center)
+                pyautogui.mouseUp(new_center)
 
                 time.sleep(wait_time)
                 return True
