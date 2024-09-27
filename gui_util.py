@@ -13,6 +13,13 @@ def scroll(scroll_clicks, wait_time=3):
     time.sleep(wait_time)
 
 
+def click_on_center(wait_time=3):
+    screen_size_x, screen_size_y = pyautogui.size()
+    screen_center_x = screen_size_x / 2
+    screen_center_y = screen_size_y / 2
+    pyautogui.click(screen_center_x, screen_center_y)
+    time.sleep(wait_time)
+
 def scroll_down_by_dragdrop(shift_px):
     screen_size_x, screen_size_y = pyautogui.size()
     screen_center_x = screen_size_x / 2
@@ -33,32 +40,6 @@ def count_of_images_on_screen(image_path, confidence=0.9, max_processing_sec=3, 
             logging.error(f"Ошибка при поиске картинки: {e}, path: {image_path}")
         time.sleep(1)
     return 0
-
-def click_on_image(image_path, confidence=0.9, max_processing_sec=3, wait_time=3):
-    start_time = time.time()
-    while time.time() - start_time < max_processing_sec:
-        try:
-            # Поиск всех вхождений картинки на экране
-            locations = list(pyautogui.locateAllOnScreen(image_path, confidence=confidence))
-            if locations:
-                # Найти нижнее вхождение (с максимальной координатой y)
-                bottom_location = max(locations, key=lambda loc: loc.top)
-
-                # Получение центра найденной области
-                center = pyautogui.center(bottom_location)
-                # Клик по центру найденной области
-                pyautogui.click(center)
-                logging.info(f"Клик по нижней картинке {image_path} выполнен.")
-
-                time.sleep(wait_time)
-                return True
-        except Exception as e:
-            logging.error(f"Ошибка при поиске картинки: {e}")
-
-        time.sleep(1)
-
-    logging.info(f"Картинка {image_path} не найдена за отведенное время.")
-    return False
 
 def click_on_image(image_path, confidence=0.9, max_processing_sec=3, wait_time=3, is_bottom=True):
     start_time = time.time()
@@ -185,3 +166,5 @@ def is_image_existed_on_screen(image_path, confidence=0.9, max_processing_sec=3)
         time.sleep(1)
     logging.warning(f"Картинка {image_path} не найдена в течение {max_processing_sec} секунд.")
     return False
+
+
