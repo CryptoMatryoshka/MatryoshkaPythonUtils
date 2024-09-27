@@ -60,6 +60,36 @@ def click_on_image(image_path, confidence=0.9, max_processing_sec=3, wait_time=3
     logging.info(f"Картинка {image_path} не найдена за отведенное время.")
     return False
 
+def click_on_image(image_path, confidence=0.9, max_processing_sec=3, wait_time=3, is_bottom=True):
+    start_time = time.time()
+    while time.time() - start_time < max_processing_sec:
+        try:
+            # Поиск всех вхождений картинки на экране
+            locations = list(pyautogui.locateAllOnScreen(image_path, confidence=confidence))
+            if locations:
+                if is_bottom:
+                    # Найти нижнее вхождение (с максимальной координатой y)
+                    location = max(locations, key=lambda loc: loc.top)
+                else:
+                    location = min(locations, key=lambda loc: loc.top)
+
+                # Получение центра найденной области
+                center = pyautogui.center(location)
+                # Клик по центру найденной области
+                pyautogui.click(center)
+                logging.info(f"Клик по нижней картинке {image_path} выполнен.")
+
+                time.sleep(wait_time)
+                return True
+        except Exception as e:
+            logging.error(f"Ошибка при поиске картинки: {e}")
+
+        time.sleep(1)
+
+    logging.info(f"Картинка {image_path} не найдена за отведенное время.")
+    return False
+
+
 def move_to_image(image_path, confidence=0.9, max_processing_sec=3, wait_time=3):
     start_time = time.time()
     while time.time() - start_time < max_processing_sec:
